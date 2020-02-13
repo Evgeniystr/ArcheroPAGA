@@ -115,7 +115,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poolItemtPrefab: {fileID: 5585983045926834509, guid: 9e5c62b9ce4f3644bbc55138360c0d14,
     type: 3}
-  poolItemtMaterial: {fileID: 2100000, guid: 1b2a1ad40f2ac63468457f65921449fd, type: 2}
   startPoolsize: 6
   poolExpandStep: 3
   unparantedItems: 1

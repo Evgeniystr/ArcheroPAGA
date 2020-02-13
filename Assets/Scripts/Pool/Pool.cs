@@ -6,20 +6,12 @@ using UnityEngine;
 public abstract class Pool : MonoBehaviour
 {
     [SerializeField] GameObject poolItemtPrefab;
-    [SerializeField] Material poolItemtMaterial;
     [SerializeField] int startPoolsize = 10;
     [SerializeField] int poolExpandStep = 5;
     [SerializeField] bool unparantedItems = true;
 
     List<GameObject> itemsPool;
 
-
-    private void Start()
-    {
-        //material apply
-        if (poolItemtMaterial != null)
-            poolItemtPrefab.GetComponent<MeshRenderer>().material = poolItemtMaterial;
-    }
 
     //create pool with new items
     void PoolInit()

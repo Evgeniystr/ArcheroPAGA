@@ -6,8 +6,6 @@ public class Arrow : MonoBehaviour, IProjectile
 {
     [SerializeField] float speed = 1;
     [SerializeField] float destroyTimer = 5;
-    [SerializeField] Material playerProjectileMat;
-    [SerializeField] Material enemyProjectileMat;
     int damage;
     Vector3 direction;
     ShootAt shootAt;
@@ -77,7 +75,6 @@ public class Arrow : MonoBehaviour, IProjectile
                 return false;
         }
     }
-
 
     IEnumerator DestroyTimer()
     {

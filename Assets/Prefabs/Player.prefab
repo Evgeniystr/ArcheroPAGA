@@ -257,9 +257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bd5d37156c8f754d8cbe5595d16a35f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolItemtPrefab: {fileID: 5585983045926834509, guid: 9e5c62b9ce4f3644bbc55138360c0d14,
+  poolItemtPrefab: {fileID: 5585983045926834509, guid: e907e440a46730549a4a016e6cc05a75,
     type: 3}
-  poolItemtMaterial: {fileID: 2100000, guid: 339e9767c49b0ab4b8b0718904b20cae, type: 2}
   startPoolsize: 6
   poolExpandStep: 3
   unparantedItems: 1
@@ -843,6 +842,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Joystick
+      objectReference: {fileID: 0}
+    - target: {fileID: 4922752236165445289, guid: 5ffe874408e0fcb498d7f3c8eb85ff44,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4922752236165445290, guid: 5ffe874408e0fcb498d7f3c8eb85ff44,
         type: 3}

@@ -33,6 +33,7 @@ public class Player : Behaviour, ICharacter
 
         var settings = SettingsLoader.LoadSettings<PlayerSettings>();
 
+
         MaxHealth = settings.Health;
         CurrentHealth = MaxHealth;
 
@@ -53,7 +54,7 @@ public class Player : Behaviour, ICharacter
 
     public override void BehavoiurExecute()
     {
-        if(joystick.isInputActive)
+        if (joystick.isInputActive)
         {
             movement.DoMove();
         }
