@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class RageDash : Attack
 {
-    public override int damage { get; set; }
-    public override float rateOfFire { get; set; }
-    public override float speed { get; set; }
-    public override float waitAfterShoot { get; set; }
+    public override IAttackSettings attackSettings { get; set; }
     public override float currentCooldown { get; set; }
     public override Transform firePoint { get; set; }
     public override Pool projectilePool { get; set; }
     public override ShootAt shootAt { get; set; }
-    float movingTime;
-    float waitAfterMove;
+
+    IMoveSettings moveSettings;
     CharacterController characterController;
     Vector3 target;
     Vector3 direction;
@@ -25,14 +22,12 @@ public class RageDash : Attack
     enum State { Seting, Moving, Waiting }
     State currentState;
 
-    public RageDash(CharacterController characterController, float moveSpeed, int damage, float movingTime, float waitAfterMove, ShootAt shootAt)
+    public RageDash(ISettings settings, CharacterController characterController, ShootAt shootAt)
     {
+        attackSettings = (IAttackSettings)settings;
+        moveSettings = (IMoveSettings)settings;
         this.characterController = characterController;
-        this.damage = damage;
-        this.movingTime = movingTime;
-        this.waitAfterMove = waitAfterMove;
         this.shootAt = shootAt;
-        speed = moveSpeed;
 
         currentState = State.Seting;
         inProgress = false;
@@ -47,7 +42,7 @@ public class RageDash : Attack
                 GetTarhetAndDirection(out target, out direction);
 
                 characterController.transform.LookAt(target);
-                timer = movingTime;
+                timer = moveSettings.MovingTime;
                                                
                 currentState = State.Moving;
                 break;
@@ -56,11 +51,11 @@ public class RageDash : Attack
                 if(timer > 0)
                 {
                     timer -= Time.fixedDeltaTime;
-                    characterController.Move(direction * speed * Time.deltaTime);
+                    characterController.Move(direction * (moveSettings.MoveSpeed*2) * Time.deltaTime);
                 }
                 else
                 {
-                    timer = waitAfterMove;
+                    timer = moveSettings.WaitAfterMove;
                     currentState = State.Waiting;
                 }
                 break;
@@ -89,11 +84,11 @@ public class RageDash : Attack
         {
             if(shootAt == ShootAt.player && hit.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
-                hit.gameObject.GetComponent<ICharacter>().TakeDamage(damage);
+                hit.gameObject.GetComponent<ICharacter>().TakeDamage(attackSettings.Damage);
             }
             else if(shootAt == ShootAt.enemies && hit.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
-                hit.gameObject.GetComponent<ICharacter>().TakeDamage(damage);
+                hit.gameObject.GetComponent<ICharacter>().TakeDamage(attackSettings.Damage);
             }
 
             attackCooldown = 1;

@@ -23,8 +23,8 @@ public class FootmanEnemy : Behaviour, ICharacter
 
         var settings = SettingsLoader.LoadSettings<FootmanSettings>();
 
-        movement = new FootmanMovement(agent, settings.MoveSpeed, settings.RotateSpeed);
-        attack = new TouchAttack(settings.Damage, settings.RateOfFire, ShootAt.player);
+        movement = new FootmanMovement(settings, agent);
+        attack = new TouchAttack(settings, ShootAt.player);
 
         MaxHealth = settings.Health;
         CurrentHealth = MaxHealth;

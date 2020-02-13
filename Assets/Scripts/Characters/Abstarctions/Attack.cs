@@ -4,11 +4,8 @@ public enum ShootAt { player, enemies }
 
 public abstract class Attack
 {
-    public abstract float rateOfFire { get; set; }
-    public abstract float waitAfterShoot { get; set; }
-    public abstract float speed { get; set; }
+    public abstract IAttackSettings attackSettings { get; set; }
     public abstract float currentCooldown { get; set; }
-    public abstract int damage { get; set; }
     public abstract Transform firePoint { get; set; }
     public abstract Pool projectilePool { get; set; }
     public abstract ShootAt shootAt { get; set; }

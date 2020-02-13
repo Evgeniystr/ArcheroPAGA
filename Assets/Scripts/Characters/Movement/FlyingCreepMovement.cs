@@ -2,13 +2,9 @@
 
 public class FlyingCreepMovement : Movement
 {
-    public override float moveSpeed { get; set; }
+    public override IMoveSettings moveSettings { get; set; }
 
     CharacterController characterController;
-    float movingTime;
-    float waitBefore;
-    float waitAfterMove;
-
     float timer;
     Vector3 direction;
 
@@ -17,24 +13,20 @@ public class FlyingCreepMovement : Movement
 
     public override bool inProgress { get; set; }
 
-
-    public FlyingCreepMovement(CharacterController characterController, float moveSpeed, float movingTime, float waitAfter)
+    public FlyingCreepMovement(ISettings settings, CharacterController characterController)
     {
+        moveSettings = (IMoveSettings)settings;
         this.characterController = characterController;
-        this.moveSpeed = moveSpeed;
-        this.movingTime = movingTime;
-        waitAfterMove = waitAfter;
 
         inProgress = true;
     }
 
     public override void DoMove()
     {
-
         switch (currentState)
         {
             case State.idle:
-                timer = movingTime;
+                timer = moveSettings.MovingTime;
                 currentState = State.isMoving;
                 DefineDirection();
 
@@ -45,12 +37,12 @@ public class FlyingCreepMovement : Movement
             case State.isMoving:
                 if(timer > 0)
                 {
-                    characterController.Move(direction * moveSpeed * Time.fixedDeltaTime);
+                    characterController.Move(direction * moveSettings.MoveSpeed * Time.fixedDeltaTime);
                     timer -= Time.fixedDeltaTime;
                 }
                 else
                 {
-                    timer = waitAfterMove;
+                    timer = moveSettings.WaitAfterMove;
                     currentState = State.isWaitingAfter;
                 }
                 break;

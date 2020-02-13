@@ -2,11 +2,8 @@
 
 public class SpreadAttack : Attack
 {
-    public override float rateOfFire { get; set; }
-    public override float waitAfterShoot { get; set; }
-    public override float speed { get; set; }
+    public override IAttackSettings attackSettings { get; set; }
     public override float currentCooldown { get; set; }
-    public override int damage { get; set; }
     public override Transform firePoint { get; set; }
     public override Pool projectilePool { get; set; }
     public override ShootAt shootAt { get; set; }
@@ -14,24 +11,17 @@ public class SpreadAttack : Attack
     enum State { isShooting, isWaiting }
     State currentState;
     Transform thisCharacter;
-    int spreadCount;
     float timer;
-    float spreadStep;
 
     public override bool inProgress { get; set; }
 
-
-    public SpreadAttack(int damage, float speed, Transform firePoint, Pool projectilePool, float waitAfterShoot, ShootAt shootAt, int spreadCount = 1, float spreadStep = 30)
+    public SpreadAttack(ISettings settings, Transform firePoint, Pool projectilePool, ShootAt shootAt)
     {
-        this.damage = damage;
-        this.speed = speed;
+        attackSettings = (IAttackSettings)settings;
         this.firePoint = firePoint;
         this.projectilePool = projectilePool;
-        this.waitAfterShoot = waitAfterShoot;
         this.shootAt = shootAt;
-        this.spreadCount = spreadCount;
         thisCharacter = firePoint.root;
-        this.spreadStep = spreadStep;
     }
 
     public override void DoAttack()
@@ -64,29 +54,31 @@ public class SpreadAttack : Attack
         var lookTarget = new Vector3(targeTransform.position.x, thisCharacter.position.y, targeTransform.position.z);
         thisCharacter.LookAt(lookTarget);
 
-        if(spreadCount == 1)
+        if(attackSettings.SpreadCount == 1)
         {
             var newProjectile = projectilePool.GetPoolItem();
-            newProjectile.GetComponent<IProjectile>().SetAndShoot(firePoint.position, targeTransform.position, damage, speed, shootAt);
+            newProjectile.GetComponent<IProjectile>().SetAndShoot(firePoint.position, targeTransform.position,
+                                                      attackSettings.Damage, attackSettings.ProjectileSpeed, shootAt);
         }
         else
         {
             MakeSpread(targeTransform);
         }
 
-        timer = waitAfterShoot;
+        timer = attackSettings.WaitAfterShoot;
         currentState = State.isWaiting;
     }
 
     void MakeSpread(Transform targeTransform)
     {
-        var rotateModifyer = -(spreadCount / 2) * spreadStep;//starting modifyer
+        var rotateModifyer = -(attackSettings.SpreadCount / 2) * attackSettings.SpreadStep;//starting modifyer
 
-        for (int i = 0; i < spreadCount; i++)
+        for (int i = 0; i < attackSettings.SpreadCount; i++)
         {
             var newProjectile = projectilePool.GetPoolItem();
-            newProjectile.GetComponent<IProjectile>().SetAndShoot(firePoint.position, targeTransform.position, damage, speed, shootAt, rotateModifyer);
-            rotateModifyer += spreadStep;
+            newProjectile.GetComponent<IProjectile>().SetAndShoot(firePoint.position, targeTransform.position,
+                                                      attackSettings.Damage, attackSettings.ProjectileSpeed, shootAt, rotateModifyer);
+            rotateModifyer += attackSettings.SpreadStep;
         }
     }
 

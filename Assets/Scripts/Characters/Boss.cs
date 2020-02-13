@@ -84,18 +84,14 @@ public class Boss : Behaviour, ICharacter
         switch (currentState)
         {
             case BossBehaviourState.Dash:
-                attack = new RageDash(characterController, settings.MoveSpeed, settings.Damage,
-                                      settings.MovingTime, settings.WaitAfterMove, ShootAt.player);
+                attack = new RageDash(settings, characterController, ShootAt.player);
                 break;
             case BossBehaviourState.RapidFire:
-                attack = new RapidShotAttack(settings.RateOfFire, settings.Damage, settings.ProjectileSpeed, 
-                                            firePoint, projectilePool, gameObject, ShootAt.player, settings.BurstCount);
-
-                movement = new FlyingCreepMovement(characterController, settings.MoveSpeed, settings.MovingTime, settings.WaitAfterMove);
+                attack = new RapidShotAttack(settings, firePoint, projectilePool, ShootAt.player);
+                movement = new FlyingCreepMovement(settings, characterController);
                 break;
             case BossBehaviourState.SpreadFire:
-                attack = new SpreadAttack(settings.Damage, settings.ProjectileSpeed, firePoint, projectilePool, settings.WaitAfterShoot, ShootAt.player, 3);
-                //set pattern
+                attack = new SpreadAttack(settings, firePoint, projectilePool, ShootAt.player);
                 break;
         }
 

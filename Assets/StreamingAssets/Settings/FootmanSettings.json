@@ -1,5 +1,4 @@
-{"MoveSpeed" : 2,
-"RotateSpeed" : 300,
-"Health" : 75,
+{"Health" : 75,
+"MoveSpeed" : 2,
 "Damage" : 15,
 "RateOfFire" : 1}

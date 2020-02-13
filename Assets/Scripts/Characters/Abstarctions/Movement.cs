@@ -1,6 +1,7 @@
 ﻿public abstract class Movement
 {
-    public abstract float moveSpeed { get;  set; }
+    public abstract IMoveSettings moveSettings { get; set; }
+    
     public abstract bool inProgress { get; set; }
 
 
@@ -8,6 +9,6 @@
 
     public void SpeedUpdate(float value)
     {
-        moveSpeed = value;
+        moveSettings.MoveSpeed = value;
     }
 }

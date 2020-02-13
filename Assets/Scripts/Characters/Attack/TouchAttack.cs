@@ -4,21 +4,17 @@ using UnityEngine;
 
 public class TouchAttack : Attack
 {
-    public override float rateOfFire { get; set; }
-    public override float waitAfterShoot { get; set; }
-    public override float speed { get; set; }
+    public override IAttackSettings attackSettings { get; set; }
     public override float currentCooldown { get; set; }
-    public override int damage { get; set; }
     public override Transform firePoint { get; set; }
     public override Pool projectilePool { get; set; }
     public override ShootAt shootAt { get; set; }
 
     public override bool inProgress { get; set; }
 
-    public TouchAttack(int damage, float rateOfFire, ShootAt shootAt)
+    public TouchAttack(ISettings settings, ShootAt shootAt)
     {
-        this.damage = damage;
-        this.rateOfFire = rateOfFire;
+        attackSettings = (IAttackSettings)settings;
         this.shootAt = shootAt;
     }
 
@@ -28,10 +24,10 @@ public class TouchAttack : Attack
     {
         if (OponentDetect(other.gameObject.layer) && CooldownTimer())
         {
-            other.gameObject.GetComponent<ICharacter>().TakeDamage(damage);
+            other.gameObject.GetComponent<ICharacter>().TakeDamage(attackSettings.Damage);
 
             //cooldown
-            currentCooldown = rateOfFire;
+            currentCooldown = attackSettings.RateOfFire;
         }
     }
 

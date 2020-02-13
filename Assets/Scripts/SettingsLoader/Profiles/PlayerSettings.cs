@@ -1,12 +1,21 @@
 ﻿using System;
 
 [Serializable]
-public class PlayerSettings : ISettings
+public class PlayerSettings : ISettings, IAttackSettings, IMoveSettings
 {
-    public float MoveSpeed;
     public int Health;
-    public int Damage;
-    public float RateOfFire;
-    public float ProjectileSpeed;
-    public float WaitAfterShoot;
+
+    //IMoveSettings
+    public float MoveSpeed { get; set; }
+    public float MovingTime { get; set; }
+    public float WaitAfterMove { get; set; }
+
+    //IAttackSettings
+    public int Damage { get; set; }
+    public float RateOfFire { get; set; }
+    public float ProjectileSpeed { get; set; }
+    public float WaitAfterShoot { get; set; }
+    public int BurstCount { get; set; }
+    public int SpreadStep { get; set; }
+    public int SpreadCount { get; set; }
 }

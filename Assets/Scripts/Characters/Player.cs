@@ -36,9 +36,8 @@ public class Player : Behaviour, ICharacter
         MaxHealth = settings.Health;
         CurrentHealth = MaxHealth;
 
-        movement = new PlayerMovement(characterController, joystick, settings.MoveSpeed);
-        attack = new RapidShotAttack(settings.RateOfFire, settings.Damage, settings.ProjectileSpeed, 
-                                     firePoint, projectilePool, gameObject, ShootAt.enemies);
+        movement = new PlayerMovement(settings, characterController, joystick);
+        attack = new RapidShotAttack(settings, firePoint, projectilePool, ShootAt.enemies);
 
         if (characterController == null)
             characterController = GetComponent<CharacterController>();

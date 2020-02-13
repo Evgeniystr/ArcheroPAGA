@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class SingleShotAttack : Attack
 {
-    public override int damage { get; set; }
-    public override float rateOfFire { get; set; }
-    public override float speed { get; set; }
-    public override float waitAfterShoot { get; set; }
+    public override IAttackSettings attackSettings { get; set; }
     public override float currentCooldown { get; set; }
     public override Transform firePoint { get; set; }
     public override Pool projectilePool { get; set; }
@@ -19,15 +16,13 @@ public class SingleShotAttack : Attack
     float timer;
     enum State { isShooting, isWaiting }
     State currentState;
+    
 
-
-    public SingleShotAttack(int damage, float speed, Transform firePoint, Pool projectilePool, float waitAfterShoot, ShootAt shootAt)
+    public SingleShotAttack(ISettings settings, Transform firePoint, Pool projectilePool, ShootAt shootAt)
     {
-        this.speed = speed;
-        this.damage = damage;
+        attackSettings = (IAttackSettings)settings;
         this.firePoint = firePoint;
         this.projectilePool = projectilePool;
-        this.waitAfterShoot = waitAfterShoot;
         this.shootAt = shootAt;
 
         thisCharacter = firePoint.root;
@@ -66,9 +61,9 @@ public class SingleShotAttack : Attack
         thisCharacter.LookAt(lookTarget);
 
         var newProjectile = projectilePool.GetPoolItem();
-        newProjectile.GetComponent<IProjectile>().SetAndShoot(firePoint.position, targeTransform.position, damage, speed, shootAt);
+        newProjectile.GetComponent<IProjectile>().SetAndShoot(firePoint.position, targeTransform.position, attackSettings.Damage, attackSettings.ProjectileSpeed, shootAt);
 
-        timer = waitAfterShoot;
+        timer = attackSettings.WaitAfterShoot;
         currentState = State.isWaiting;
     }
 

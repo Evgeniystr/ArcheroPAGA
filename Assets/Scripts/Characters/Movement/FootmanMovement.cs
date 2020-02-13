@@ -5,16 +5,16 @@ using UnityEngine.AI;
 
 public class FootmanMovement : Movement
 {
-    public override float moveSpeed { get; set; }
+    public override IMoveSettings moveSettings { get; set; }
     public override bool inProgress { get; set; }
 
     NavMeshAgent agent;
 
-    public FootmanMovement(NavMeshAgent agent, float moveSpeed, float rotateSpeed)
+    public FootmanMovement(ISettings settings, NavMeshAgent agent)
     {
+        moveSettings = (IMoveSettings)settings;
         this.agent = agent;
-        this.agent.speed = moveSpeed;
-        this.agent.angularSpeed = rotateSpeed;
+        this.agent.speed = moveSettings.MoveSpeed;
     }
 
 

@@ -2,54 +2,65 @@
 
 public class RapidShotAttack : Attack
 {
-    public override int damage { get; set; }
-    public override float rateOfFire { get; set; }
-    public override float speed { get; set; }
-    public override float waitAfterShoot { get; set; }
+    public override IAttackSettings attackSettings { get; set; }
     public override float currentCooldown { get; set; }
     public override Transform firePoint { get; set; }
     public override Pool projectilePool { get; set; }
     public override ShootAt shootAt { get; set; }
-    GameObject thisCharacterGO { get; set; }
-    double burst;
     double currentBurst;
 
     public override bool inProgress { get; set; }
 
+    Transform thisCharacter;
+    float timer;
+    enum State { isShooting, isWaiting }
+    State currentState;
 
-    public RapidShotAttack(float rateOfFire, int damage, float speed, Transform firePoint, Pool projectilePool, 
-                            GameObject thisCharacterGO, ShootAt shootAt, double burst = double.PositiveInfinity )
+
+    public RapidShotAttack(ISettings settings, Transform firePoint, Pool projectilePool, ShootAt shootAt)
     {
-        this.rateOfFire = rateOfFire;
-        this.speed = speed;
-        this.waitAfterShoot = waitAfterShoot;
-        this.damage = damage;
+        attackSettings = (IAttackSettings)settings;
         this.firePoint = firePoint;
         this.projectilePool = projectilePool;
-        this.thisCharacterGO = thisCharacterGO;
         this.shootAt = shootAt;
-        this.burst = burst;
+
+        thisCharacter = firePoint.root;
+        currentState = State.isShooting;
     }
 
 
     public override void DoAttack()
+    {
+        switch (currentState)
+        {
+            case State.isShooting:
+                Shooting();
+                break;
+            case State.isWaiting:
+                Wait();
+                break;
+        }
+    }
+
+    void Shooting()
     {
         var targetGO = SpawnControler.Instance.GetClosestTarget(shootAt);
         if (targetGO == null)
             return;
 
         //rotate
-        var lookTarget = new Vector3(targetGO.transform.position.x, thisCharacterGO.transform.position.y, targetGO.transform.position.z);
-        thisCharacterGO.transform.LookAt(lookTarget);
+        var lookTarget = new Vector3(targetGO.transform.position.x, thisCharacter.position.y, targetGO.transform.position.z);
+        thisCharacter.LookAt(lookTarget);
 
         //shoot
         if (CooldownTimer())
         {
             var newProjectile = projectilePool.GetPoolItem();
-            newProjectile.GetComponent<IProjectile>().SetAndShoot(firePoint.position, targetGO.transform.position, damage, speed, shootAt);
+            newProjectile.GetComponent<IProjectile>().SetAndShoot(firePoint.position, targetGO.transform.position, 
+                                                      attackSettings.Damage, attackSettings.ProjectileSpeed, shootAt);
 
             //set cooldown
-            currentCooldown = rateOfFire;
+            currentCooldown = attackSettings.RateOfFire;
 
             currentBurst++;
             BurstLimitCheck();
@@ -58,9 +69,23 @@ public class RapidShotAttack : Attack
 
     void BurstLimitCheck()
     {
-        if(currentBurst == burst)
+        if (currentBurst == attackSettings.BurstCount)
         {
             currentBurst = 0;
+            timer = attackSettings.WaitAfterShoot;
+            currentState = State.isWaiting;
+        }
+    }
+
+    void Wait()
+    {
+        if (timer > 0)
+        {
+            timer -= Time.fixedDeltaTime;
+        }
+        else
+        {
+            currentState = State.isShooting;
             inProgress = false;
         }
     }
