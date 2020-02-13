@@ -1,0 +1,9 @@
+{"MoveSpeed" : 5,
+"Health" : 500,
+"Damage" : 15,
+"RateOfFire" : 0.2,
+"ProjectileSpeed" : 10,
+"MovingTime" : 2,
+"WaitAfterMove" : 1,
+"WaitAfterShoot" : 1,
+"BurstCount" : 3}
