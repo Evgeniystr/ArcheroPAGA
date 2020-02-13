@@ -23,7 +23,7 @@ public class FootmanEnemy : Behaviour, ICharacter
 
         var settings = SettingsLoader.LoadSettings<FootmanSettings>();
 
-        movement = new FootmanMovement(settings, agent);
+        movement = new ChasingMovement(settings, agent);
         attack = new TouchAttack(settings, ShootAt.player);
 
         MaxHealth = settings.Health;

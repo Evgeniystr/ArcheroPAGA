@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class FootmanMovement : Movement
+public class ChasingMovement : Movement
 {
     public override IMoveSettings moveSettings { get; set; }
     public override bool inProgress { get; set; }
 
     NavMeshAgent agent;
 
-    public FootmanMovement(ISettings settings, NavMeshAgent agent)
+    public ChasingMovement(ISettings settings, NavMeshAgent agent)
     {
         moveSettings = (IMoveSettings)settings;
         this.agent = agent;

@@ -80,6 +80,7 @@ public class RageDash : Attack
 
     public void DealDamage(ControllerColliderHit hit)
     {
+        Debug.Log(1);
         if(attackCooldown <= 0)
         {
             if(shootAt == ShootAt.player && hit.gameObject.layer == LayerMask.NameToLayer("Player"))

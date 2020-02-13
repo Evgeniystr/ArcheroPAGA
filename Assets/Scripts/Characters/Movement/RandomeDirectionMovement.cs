@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class FlyingCreepMovement : Movement
+public class RandomeDirectionMovement : Movement
 {
     public override IMoveSettings moveSettings { get; set; }
 
@@ -13,7 +13,7 @@ public class FlyingCreepMovement : Movement
 
     public override bool inProgress { get; set; }
 
-    public FlyingCreepMovement(ISettings settings, CharacterController characterController)
+    public RandomeDirectionMovement(ISettings settings, CharacterController characterController)
     {
         moveSettings = (IMoveSettings)settings;
         this.characterController = characterController;

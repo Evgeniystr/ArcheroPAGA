@@ -28,7 +28,7 @@ public class FlyingCreep : Behaviour, ICharacter
             projectilePool = GetComponent<Pool>();
 
         var settings = SettingsLoader.LoadSettings<FlyingCreepSettings>();
-        movement = new FlyingCreepMovement(settings, characterController);
+        movement = new RandomeDirectionMovement(settings, characterController);
         attack = new RapidShotAttack(settings, firePoint, projectilePool, ShootAt.player);
 
 

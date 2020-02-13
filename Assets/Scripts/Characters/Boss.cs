@@ -88,7 +88,7 @@ public class Boss : Behaviour, ICharacter
                 break;
             case BossBehaviourState.RapidFire:
                 attack = new RapidShotAttack(settings, firePoint, projectilePool, ShootAt.player);
-                movement = new FlyingCreepMovement(settings, characterController);
+                movement = new RandomeDirectionMovement(settings, characterController);
                 break;
             case BossBehaviourState.SpreadFire:
                 attack = new SpreadAttack(settings, firePoint, projectilePool, ShootAt.player);
