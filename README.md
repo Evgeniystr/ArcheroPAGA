@@ -1,2 +1,5 @@
 # ArcheroPAGA
- Archero-like game
+ Archero-like game mockup
+ Include base gamplay mechanic archictecture
+ 
+ 
